@@ -46,7 +46,7 @@ namespace Vrelk.Logging
 
             if (fileLog != FileLoggingMode.Disabled)
             {
-                //if logFileName is the default, set it to <appname.exe>.log
+                //if logFileName is the default, set it to <appname.exe>, we will append ".log" later
                 if (logFileName == null)
                     logFileName = Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
 
@@ -56,6 +56,9 @@ namespace Vrelk.Logging
                     //check if the filename or path contain any invalid characters
                     if (logFileName.IndexOfAny(System.IO.Path.GetInvalidPathChars()) == -1)
                     {
+                        //append ".log" extension to the end
+                        logFileName += ".log";
+
                         string fullPath = Path.GetFullPath(logFileName);
                         string fileName = Path.GetFileName(fullPath);
                         string pathName = Path.GetDirectoryName(fullPath);
@@ -65,6 +68,7 @@ namespace Vrelk.Logging
                         {
                             Directory.CreateDirectory(pathName);
                         }
+
                         if (overwrite)
                         {
                             if (File.Exists(fullPath))
